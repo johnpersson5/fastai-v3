@@ -6,7 +6,7 @@ from fastai.vision import *
 from io import BytesIO
 from starlette.applications import Starlette
 from starlette.middleware.cors import CORSMiddleware
-from starlette.responses import HTMLResponse, JSONResponse
+from starlette.responses import HTMLResponse, JSONResponse, Response
 from starlette.staticfiles import StaticFiles
 
 codes = ['Animal', 'Archway', 'Bicyclist', 'Bridge', 'Building', 'Car', 'CartLuggagePram', 'Child', 'Column_Pole',
@@ -70,8 +70,15 @@ async def analyze(request):
     img_data = await request.form()
     img_bytes = await (img_data['file'].read())
     img = open_image(BytesIO(img_bytes))
-    prediction = learn.predict(img)[0]
-    return JSONResponse({'result': str(prediction)})
+    prediction = learn.predict(img)
+    think_np = np.array(prediction[1])
+    think_np.shape = (256,256)
+    think_np = think_np.astype(int)
+    think_np[think_np > 0] = 255
+    think_im = PilImage.fromarray((think_np).astype('uint8'), mode='L')
+    img_bytes = BytesIO()
+    think_im.save(img_bytes, format='png')
+    return Response(img_bytes.getvalue(), media_type='image/png')
 
 
 if __name__ == '__main__':
