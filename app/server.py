@@ -4,6 +4,7 @@ import uvicorn
 from fastai import *
 from fastai.vision import *
 from io import BytesIO
+from PIL import Image
 from starlette.applications import Starlette
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, JSONResponse, Response
