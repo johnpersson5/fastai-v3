@@ -9,28 +9,10 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
 
-mask = open_mask(get_y_fn(img_f))
-mask.show(figsize=(5,5), alpha=1)
-src_size = np.array(mask.shape[1:])
-src_size,mask.data
-codes = np.loadtxt(path/'codes.txt', dtype=str); codes
-
-name2id = {v:k for k,v in enumerate(codes)}
-void_code = name2id['Void']
-
-def acc_camvid(input, target):
-    target = target.squeeze(1)
-    mask = target != void_code
-    return (input.argmax(dim=1)[mask]==target[mask]).float().mean()
-metrics=acc_camvid
-
-export_file_url = 'https://www.dropbox.com/s/ep9m2xm8o92ixny/export.pkl?dl=0'
+export_file_url = 'https://www.dropbox.com/s/6bgq8t6yextloqp/export.pkl?raw=1'
 export_file_name = 'export.pkl'
 
-classes = ['Animal', 'Archway', 'Bicyclist', 'Bridge', 'Building', 'Car', 'CartLuggagePram', 'Child', 'Column_Pole',
-       'Fence', 'LaneMkgsDriv', 'LaneMkgsNonDriv', 'Misc_Text', 'MotorcycleScooter', 'OtherMoving', 'ParkingBlock',
-       'Pedestrian', 'Road', 'RoadShoulder', 'Sidewalk', 'SignSymbol', 'Sky', 'SUVPickupTruck', 'TrafficCone',
-       'TrafficLight', 'Train', 'Tree', 'Truck_Bus', 'Tunnel', 'VegetationMisc', 'Void', 'Wall']
+classes = ['black', 'grizzly', 'teddys']
 path = Path(__file__).parent
 
 app = Starlette()
