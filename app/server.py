@@ -9,10 +9,10 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
 
-path = Path('camvid')
-path_lbl = path/'labels'
-path_img = path/'images'
-fnames = get_image_files(path_img)
+#path = Path('camvid')
+#path_lbl = path/'labels'
+#path_img = path/'images'
+#fnames = get_image_files(path_img)
 fnames[:3]
 lbl_names = get_image_files(path_lbl)
 lbl_names[:3]
@@ -21,7 +21,12 @@ get_y_fn = lambda x: path_lbl/f'{x.stem}_P{x.suffix}'
 mask = open_mask(get_y_fn(img_f))
 src_size = np.array(mask.shape[1:])
 src_size,mask.data
-codes = np.loadtxt(path/'codes.txt', dtype=str); codes
+#codes = np.loadtxt(path/'codes.txt', dtype=str); codes
+codes = ['Animal', 'Archway', 'Bicyclist', 'Bridge', 'Building', 'Car', 'CartLuggagePram', 'Child', 'Column_Pole',
+       'Fence', 'LaneMkgsDriv', 'LaneMkgsNonDriv', 'Misc_Text', 'MotorcycleScooter', 'OtherMoving', 'ParkingBlock',
+       'Pedestrian', 'Road', 'RoadShoulder', 'Sidewalk', 'SignSymbol', 'Sky', 'SUVPickupTruck', 'TrafficCone',
+       'TrafficLight', 'Train', 'Tree', 'Truck_Bus', 'Tunnel', 'VegetationMisc', 'Void', 'Wall']
+
 
 #i'm leaving out "dataset" stuff
 
