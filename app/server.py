@@ -95,9 +95,14 @@ async def analyze(request):
     img_data = await request.form()
     img_bytes = await (img_data['file'].read())
     img = open_image(BytesIO(img_bytes))
-    prediction = learn.predict(img)
-#changed from prediction=learn.predict(img)[0]
-    return JSONResponse({'result': str(prediction)})
+    outputs = learn.predict(img)
+    im = image2np(outputs[2].sigmoid())
+    resp_bytes = BytesIO()
+    PIL.Image.fromarray((im*255).astype('uint8')).save(resp_bytes, format='png')
+    img_str = base64.b64encode(resp_bytes.getvalue()).decode()
+    img_str = "data:image/png;base64," + img_str
+    return Response(img_str)
+
 
 
 if __name__ == '__main__':
