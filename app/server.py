@@ -65,21 +65,16 @@ async def homepage(request):
     return HTMLResponse(html_file.open().read())
 
 
-
 @app.route('/analyze', methods=['POST'])
 async def analyze(request):
     img_data = await request.form()
     img_bytes = await (img_data['file'].read())
     img = open_image(BytesIO(img_bytes))
-    outputs = learn.predict(img)
-    im = image2np(outputs[2].sigmoid())
-    resp_bytes = BytesIO()
-    PIL.Image.fromarray((im*255).astype('uint8')).save
-    img_str = base64.b64encode(resp_bytes.getvalue()).decode()
-    img_str = "data:image/png;base64," + img_str
-    return Response(img_str)
+    prediction = learn.predict(img)[0]
+    return JSONResponse({'result': str(prediction)})
 
 
 if __name__ == '__main__':
     if 'serve' in sys.argv:
         uvicorn.run(app=app, host='0.0.0.0', port=5000, log_level="info")
+
