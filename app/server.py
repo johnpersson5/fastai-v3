@@ -9,6 +9,12 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
 
+from functools import partial
+import pickle
+pickle.load = partial(pickle.load, encoding="latin1")
+pickle.Unpickler = partial(pickle.Unpickler, encoding="latin1")
+model = torch.load(model_file, map_location=lambda storage, loc: storage, pickle_module=pickle)
+
 codes = array(['Sky', 'Building', 'Pole', 'Road', 'Sidewalk', 'Tree','Sign', 'Fence', 'Car', 'Pedestrian', 'Cyclist', 'Void'])
 name2id = {v:k for k,v in enumerate(codes)}
 void_code = name2id['Void']
