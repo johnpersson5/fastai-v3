@@ -4,51 +4,25 @@ import uvicorn
 from fastai import *
 from fastai.vision import *
 from io import BytesIO
-from PIL import Image
 from starlette.applications import Starlette
 from starlette.middleware.cors import CORSMiddleware
-from starlette.responses import HTMLResponse, JSONResponse, Response
+from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
 
-#path = Path('camvid')
-#path_lbl = path/'labels'
-#path_img = path/'images'
-#fnames = get_image_files(path_img)
-#fnames[:3]
-#lbl_names = get_image_files(path_lbl)
-#lbl_names[:3]
-#img_f = fnames[0]
-#get_y_fn = lambda x: path_lbl/f'{x.stem}_P{x.suffix}'
-#mask = open_mask(get_y_fn(img_f))
-#src_size = np.array(mask.shape[1:])
-#src_size,mask.data
-#codes = np.loadtxt(path/'codes.txt', dtype=str); codes
 codes = ['Animal', 'Archway', 'Bicyclist', 'Bridge', 'Building', 'Car', 'CartLuggagePram', 'Child', 'Column_Pole',
        'Fence', 'LaneMkgsDriv', 'LaneMkgsNonDriv', 'Misc_Text', 'MotorcycleScooter', 'OtherMoving', 'ParkingBlock',
        'Pedestrian', 'Road', 'RoadShoulder', 'Sidewalk', 'SignSymbol', 'Sky', 'SUVPickupTruck', 'TrafficCone',
        'TrafficLight', 'Train', 'Tree', 'Truck_Bus', 'Tunnel', 'VegetationMisc', 'Void', 'Wall']
-
-
-#i'm leaving out "dataset" stuff
 
 def acc_camvid(input, target):
     target = target.squeeze(1)
     mask = target != void_code
     return (input.argmax(dim=1)[mask]==target[mask]).float().mean()
 
-name2id = {v:k for k,v in enumerate(codes)}
-void_code = name2id['Void']
-metrics=acc_camvid
-wd=1e-2
-
 export_file_url = 'https://www.dropbox.com/s/ep9m2xm8o92ixny/export.pkl?dl=1'
 export_file_name = 'export.pkl'
 
-#classes = ['Animal', 'Archway', 'Bicyclist', 'Bridge', 'Building', 'Car', 'CartLuggagePram', 'Child', 'Column_Pole',
-#       'Fence', 'LaneMkgsDriv', 'LaneMkgsNonDriv', 'Misc_Text', 'MotorcycleScooter', 'OtherMoving', 'ParkingBlock',
-##       'Pedestrian', 'Road', 'RoadShoulder', 'Sidewalk', 'SignSymbol', 'Sky', 'SUVPickupTruck', 'TrafficCone',
- #      'TrafficLight', 'Train', 'Tree', 'Truck_Bus', 'Tunnel', 'VegetationMisc', 'Void', 'Wall']
-       
+classes = ['black', 'grizzly', 'teddys']
 path = Path(__file__).parent
 
 app = Starlette()
@@ -98,7 +72,6 @@ async def analyze(request):
     img = open_image(BytesIO(img_bytes))
     prediction = learn.predict(img)[0]
     return JSONResponse({'result': str(prediction)})
-
 
 
 if __name__ == '__main__':
