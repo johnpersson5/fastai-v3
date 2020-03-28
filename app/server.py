@@ -72,7 +72,7 @@ async def analyze(request):
     img_bytes = await (img_data['file'].read())
     img = open_image(BytesIO(img_bytes))
     outputs = learn.predict(img)
-    im = image2np(outputs[2].sigmoid()
+    im = image2np(outputs[2].sigmoid())
     resp_bytes = BytesIO()
     PIL.Image.fromarray((im*255).astype('uint8')).save
     img_str = base64.b64encode(resp_bytes.getvalue()).decode()
