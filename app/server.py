@@ -40,11 +40,6 @@ void_code = name2id['Void']
 metrics=acc_camvid
 wd=1e-2
 
-def acc_camvid(input, target):
-    target = target.squeeze(1)
-    mask = target != void_code
-    return (input.argmax(dim=1)[mask]==target[mask]).float().mean()
-
 export_file_url = 'https://www.dropbox.com/s/ep9m2xm8o92ixny/export.pkl?dl=1'
 export_file_name = 'export.pkl'
 
@@ -100,7 +95,8 @@ async def analyze(request):
     img_data = await request.form()
     img_bytes = await (img_data['file'].read())
     img = open_image(BytesIO(img_bytes))
-    prediction = learn.predict(img)[0]
+    prediction = learn.predict(img)
+#changed from prediction=learn.predict(img)[0]
     return JSONResponse({'result': str(prediction)})
 
 
