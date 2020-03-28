@@ -9,6 +9,7 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
 
+codes = array(['Sky', 'Building', 'Pole', 'Road', 'Sidewalk', 'Tree','Sign', 'Fence', 'Car', 'Pedestrian', 'Cyclist', 'Void'])
 name2id = {v:k for k,v in enumerate(codes)}
 void_code = name2id['Void']
 
