@@ -40,7 +40,7 @@ void_code = name2id['Void']
 metrics=acc_camvid
 wd=1e-2
 
-export_file_url = 'https://www.dropbox.com/s/6bgq8t6yextloqp/export.pkl?raw=1'
+export_file_url = 'https://www.dropbox.com/s/ep9m2xm8o92ixny/export.pkl?dl=1'
 export_file_name = 'export.pkl'
 
 #classes = ['Animal', 'Archway', 'Bicyclist', 'Bridge', 'Building', 'Car', 'CartLuggagePram', 'Child', 'Column_Pole',
