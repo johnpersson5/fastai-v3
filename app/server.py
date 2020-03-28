@@ -73,11 +73,11 @@ async def analyze(request):
     img = open_image(BytesIO(img_bytes))
     outputs = learn.predict(img)
     im = image2np(outputs[2].sigmoid()
-	resp_bytes = BytesIO()
-	PIL.Image.fromarray((im*255).astype('uint8')).save(resp_bytes, format='png')
-	img_str = base64.b64encode(resp_bytes.getvalue()).decode()
-	img_str = "data:image/png;base64," + img_str
-	return Response(img_str)
+    resp_bytes = BytesIO()
+    PIL.Image.fromarray((im*255).astype('uint8')).save(resp_bytes, format='png')
+    img_str = base64.b64encode(resp_bytes.getvalue()).decode()
+    img_str = "data:image/png;base64," + img_str
+    return Response(img_str)
 
 
 if __name__ == '__main__':
