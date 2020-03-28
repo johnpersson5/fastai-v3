@@ -28,8 +28,8 @@ function analyze() {
   };
   xhr.onload = function(e) {
     if (this.readyState === 4) {
-     var response = JSON.parse(e.target.responseText);
-     el("result-label").innerHTML = `Result = ${response["result"]}`;
+      var response = JSON.parse(e.target.responseText);
+      el("result-label").innerHTML = `Result = ${response["result"]}`;
     }
     el("analyze-button").innerHTML = "Analyze";
   };
@@ -38,4 +38,3 @@ function analyze() {
   fileData.append("file", uploadFiles[0]);
   xhr.send(fileData);
 }
-
