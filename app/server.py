@@ -8,10 +8,7 @@ from starlette.applications import Starlette
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, JSONResponse, Response
 from starlette.staticfiles import StaticFiles
-from starlette.templating import Jinja2Templates
 import base64
-
-templates = Jinja2Templates(directory='templates')
 
 codes = ['Animal', 'Archway', 'Bicyclist', 'Bridge', 'Building', 'Car', 'CartLuggagePram', 'Child', 'Column_Pole',
        'Fence', 'LaneMkgsDriv', 'LaneMkgsNonDriv', 'Misc_Text', 'MotorcycleScooter', 'OtherMoving', 'ParkingBlock',
@@ -80,7 +77,7 @@ async def analyze(request):
     PIL.Image.fromarray((im*255).astype('uint8'), mode='RGBA').save(resp_bytes, format='png')
     img_str = base64.b64encode(resp_bytes.getvalue()).decode()
     img_str = "data:image/png;base64," + img_str
-    return templates.TemplateResponse('output.html', {'request' : request, 'b64val' : img_str})
+    return Response(img_str)
 
 
 if __name__ == '__main__':
