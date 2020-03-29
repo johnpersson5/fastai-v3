@@ -28,7 +28,7 @@ function analyze() {
   };
   xhr.onload = function(e) {
       if (this.readyState === 4) {
-        el("result-label").innerHTML =  <img src="https://www.w3schools.com/images/picture.jpg" alt="Mountain"> ;
+        el("result-label").innerHTML =  `<img src="https://www.w3schools.com/images/picture.jpg" alt="Mountain">` ;
     }
     el("analyze-button").innerHTML = "Analyze";
   };
