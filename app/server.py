@@ -78,7 +78,8 @@ async def analyze(request):
     #img_str = base64.b64encode(resp_bytes.getvalue()).decode()
     #img_str = "data:image/png;base64," + img_str
     #return JSONResponse({'result': str(img_str)})
-    encoded = base64.b64encode(open(BytesIO(img_bytes), "rb").read())
+    img = BytesIO(img_bytes)
+    encoded = base64.b64encode(open(img, "rb").read())
     return JSONResponse({'result': str(encoded)})
 
 
