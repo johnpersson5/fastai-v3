@@ -28,7 +28,7 @@ function analyze() {
   };
   xhr.onload = function(e) {
     if (this.readyState === 4) {
-      var response = el("result-label").innerHTML = `<img src="${response}">`;
+      el("result-label").innerHTML = `<img src="${response}">`;
     }
     el("analyze-button").innerHTML = "Analyze";
   };
