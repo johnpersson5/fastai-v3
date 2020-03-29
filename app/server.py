@@ -77,7 +77,7 @@ async def analyze(request):
     PIL.Image.fromarray((im*255).astype('uint8'), mode='RGBA').save(resp_bytes, format='png')
     img_str = base64.b64encode(resp_bytes.getvalue()).decode()
     img_str = "data:image/png;base64," + img_str
-    return Response(img_str)
+    return templates.TemplateResponse('output.html', {'request' : request, 'b64val' : img_str})
 
 
 if __name__ == '__main__':
