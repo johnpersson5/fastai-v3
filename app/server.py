@@ -70,17 +70,14 @@ async def homepage(request):
 async def analyze(request):
     img_data = await request.form()
     img_bytes = await (img_data['file'].read())
-    #img = open_image(BytesIO(img_bytes))
-    #outputs = learn.predict(img)
-    #im = image2np(outputs[2].sigmoid())
-    #resp_bytes = BytesIO()
-    #PIL.Image.fromarray((im*255).astype('uint8'), mode='RGBA').save(resp_bytes, format='png')
-    #img_str = base64.b64encode(resp_bytes.getvalue()).decode()
-    #img_str = "data:image/png;base64," + img_str
-    #return JSONResponse({'result': str(img_str)})
-    img = BytesIO(img_bytes)
-    encoded = base64.b64encode(open(img, "rb").read())
-    return JSONResponse({'result': str(encoded)})
+    img = open_image(BytesIO(img_bytes))
+    outputs = learn.predict(img)
+    im = image2np(outputs[2].sigmoid())
+    resp_bytes = BytesIO()
+    PIL.Image.fromarray((im*255).astype('uint8'), mode='RGBA').save(resp_bytes, format='png')
+    img_str = base64.b64encode(resp_bytes.getvalue()).decode()
+    img_str = "data:image/png;base64," + img_str
+    return JSONResponse({'result': str(img_str)})
 
 
 
