@@ -70,15 +70,8 @@ async def analyze(request):
     img_data = await request.form()
     img_bytes = await (img_data['file'].read())
     img = open_image(BytesIO(img_bytes))
-    prediction = learn.predict(img)
-    think_np = np.array(prediction[1])
-    think_np.shape = (256,256)
-    think_np = think_np.astype(int)
-    think_np[think_np > 0] = 255
-    think_im = PilImage.fromarray((think_np).astype('uint8'), mode='L')
-    img_bytes = BytesIO()
-    think_im.save(img_bytes, format='png')
-    return Response(img_bytes.getvalue(), media_type='image/png')
+    learn.data.single_ds.tfmargs['size']=None
+    img.show(y=learn.predict(img)[0])
 
 
 if __name__ == '__main__':
