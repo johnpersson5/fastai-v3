@@ -27,8 +27,8 @@ function analyze() {
     alert(xhr.responseText);
   };
   xhr.onload = function(e) {
-      var response = JSON.parse(e.target.responseText);
-      el("result-label").innerHTML = "hello world!!";
+      if (this.readyState === 4) {
+        el("result-label").innerHTML = "hello world!!";
     }
     el("analyze-button").innerHTML = "Analyze";
   };
