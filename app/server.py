@@ -9,6 +9,7 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, JSONResponse, Response
 from starlette.staticfiles import StaticFiles
 import base64
+import matplotlib.pyplot as plt
 
 codes = ['Animal', 'Archway', 'Bicyclist', 'Bridge', 'Building', 'Car', 'CartLuggagePram', 'Child', 'Column_Pole',
        'Fence', 'LaneMkgsDriv', 'LaneMkgsNonDriv', 'Misc_Text', 'MotorcycleScooter', 'OtherMoving', 'ParkingBlock',
@@ -72,10 +73,13 @@ async def analyze(request):
     img_bytes = await (img_data['file'].read())
     img = open_image(BytesIO(img_bytes))
     outputs = learn.predict(img)
+    cm_hot = plt.get_cmap('tab20')
     masked = outputs[0].data
-    newmasked = image2np(masked)
+    im = np.array(masked)
+    im2 = np.squeeze(im)
+    im_color = cm_hot(im2)
     resp_bytes = BytesIO()
-    PIL.Image.fromarray((newmasked).astype('uint8')).save(resp_bytes, format='png')
+    PIL.Image.fromarray((im_color*255).astype('uint8')).save(resp_bytes, format='png')
     img_str = base64.b64encode(resp_bytes.getvalue()).decode()
     img_str = "data:image/png;base64," + img_str
     return JSONResponse({'result': str(img_str)})
