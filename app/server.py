@@ -74,6 +74,7 @@ async def analyze(request):
     outputs = learn.predict(img)
     masked = outputs[0].data
     newmasked = image2np(masked)
+    resp_bytes = BytesIO()
     PIL.Image.fromarray((newmasked).astype('uint8')).save(resp_bytes, format='png')
     img_str = base64.b64encode(resp_bytes.getvalue()).decode()
     img_str = "data:image/png;base64," + img_str
