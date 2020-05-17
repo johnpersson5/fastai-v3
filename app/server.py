@@ -21,7 +21,7 @@ def acc_camvid(input, target):
     mask = target != void_code
     return (input.argmax(dim=1)[mask]==target[mask]).float().mean()
 
-export_file_url = 'https://www.dropbox.com/s/ep9m2xm8o92ixny/export.pkl?dl=1'
+export_file_url = 'https://www.dropbox.com/s/dth7kg6dak6x3sd/export.pkl?dl=1'
 export_file_name = 'export.pkl'
 
 classes = ['black', 'grizzly', 'teddys']
@@ -72,15 +72,24 @@ async def analyze(request):
     img_data = await request.form()
     img_bytes = await (img_data['file'].read())
     img = open_image(BytesIO(img_bytes))
+    img = img.resize(416)
     outputs = learn.predict(img)
-    cm_hot = plt.get_cmap('tab20')
+    cm_hot = plt.get_cmap('tab10')
     masked = outputs[0].data
     im = np.array(masked)
     im2 = np.squeeze(im)
     im_color = cm_hot(im2)
     resp_bytes = BytesIO()
     PIL.Image.fromarray((im_color*255).astype('uint8')).save(resp_bytes, format='png')
-    img_str = base64.b64encode(resp_bytes.getvalue()).decode()
+    background=Image.open('valids/00428.png')
+    background=background.resize((416,416))
+    overlay=Image.open(resp_bytes)
+    background = background.convert("RGBA")
+    overlay = overlay.convert("RGBA")
+    new_img = Image.blend(background, overlay, 0.5)
+    buffered = BytesIO()
+    new_img.save(buffered, format="png")
+    img_str = base64.b64encode(buffered.getvalue()).decode()
     img_str = "data:image/png;base64," + img_str
     return JSONResponse({'result': str(img_str)})
 
