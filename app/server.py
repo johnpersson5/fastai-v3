@@ -82,7 +82,7 @@ async def analyze(request):
     im_color = cm_hot(im2)
     resp_bytes = BytesIO()
     PIL.Image.fromarray((im_color*255).astype('uint8')).save(resp_bytes, format='png')
-    background=Image.open('valids/00428.png')
+    background=Image.open(BytesIO(img_bytes))
     background=background.resize((416,416))
     overlay=Image.open(resp_bytes)
     background = background.convert("RGBA")
