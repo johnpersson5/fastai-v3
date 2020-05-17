@@ -9,6 +9,7 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, JSONResponse, Response
 from starlette.staticfiles import StaticFiles
 import base64
+from PIL import Image
 import matplotlib.pyplot as plt
 
 codes = ['Animal', 'Archway', 'Bicyclist', 'Bridge', 'Building', 'Car', 'CartLuggagePram', 'Child', 'Column_Pole',
